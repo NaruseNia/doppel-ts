@@ -4,6 +4,7 @@ import type { ComponentInfo } from "../../types/component.js";
 import type { PropsInfo } from "../../types/props.js";
 import type { NormalizedJSXTree } from "../../types/jsx.js";
 import { detectComponents } from "../../detector/index.js";
+import { extractProps as extractPropsImpl } from "../../extractor/props.js";
 
 export class TS6CompilerParser implements ParserInterface {
   private program: ts.Program;
@@ -30,9 +31,8 @@ export class TS6CompilerParser implements ParserInterface {
     return detectComponents(filePaths, this.program, this.checker);
   }
 
-  extractProps(_component: ComponentInfo): PropsInfo {
-    // TASK-004 で実装
-    return { properties: [], hasChildren: false, hasRef: false };
+  extractProps(component: ComponentInfo): PropsInfo {
+    return extractPropsImpl(component, this.program, this.checker);
   }
 
   extractJSXTree(_component: ComponentInfo): NormalizedJSXTree {
