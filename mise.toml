@@ -5,7 +5,7 @@ rust = "stable"
 
 [tasks.install]
 description = "Install dependencies"
-run = "pnpm install --frozen-lockfile"
+run = "pnpm install --no-frozen-lockfile"
 
 [tasks.build]
 description = "Build core & cli"
