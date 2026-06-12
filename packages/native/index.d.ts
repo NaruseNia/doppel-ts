@@ -1,1 +1,1 @@
-export declare function computeSimilarity(componentsJson: string): string;
+export declare function computeSimilarity(inputJson: string): string;
