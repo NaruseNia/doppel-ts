@@ -60,6 +60,9 @@ async function main() {
   const result = analyze({ filePaths: files, config });
   s?.stop(`Found ${result.totalComponents} components`);
 
+  if (usingFallback && isTerminal) {
+    log.warn("Native addon not available — using JS fallback (reduced accuracy)");
+  }
   s?.start("Computing similarity...");
   const batchInput = {
     components: result.components,
@@ -90,10 +93,11 @@ async function main() {
 }
 
 let nativeModule: { computeSimilarity: (json: string) => string } | null = null;
+let usingFallback = false;
 try {
   nativeModule = require("@doppel-ts/native");
 } catch {
-  // Native addon not available — fallback to JS stub
+  usingFallback = true;
 }
 
 function computeSimilarity(
