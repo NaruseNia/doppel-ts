@@ -17,7 +17,7 @@ doppel-ts v1 の実装を5フェーズに分けて進行する。フェーズ1�
 | 3        | TASK-004: Props 型抽出                       | TASK-002, TASK-003                               | L    | ✅ Done    |
 | 3        | TASK-005: JSX ツリー抽出・正規化             | TASK-002, TASK-003                               | L    | ✅ Done    |
 | 3        | TASK-009: 類似度計算エンジン（Rust）         | TASK-008                                         | L    | ✅ Done    |
-| 4        | TASK-006: 構造データ正規化                   | TASK-004, TASK-005                               | M    | 🔲 Ready   |
+| 4        | TASK-006: 構造データ正規化                   | TASK-004, TASK-005                               | M    | ✅ Done    |
 | 4        | TASK-010: 多段階閾値判定・重み付け           | TASK-009                                         | S    | 🔲 Ready   |
 | 4        | TASK-012: CLI 実装                           | TASK-011                                         | M    | 🔲 Ready   |
 | 4        | TASK-014: suppress 機能                      | TASK-011, TASK-009                               | S    | 🔲 Ready   |
