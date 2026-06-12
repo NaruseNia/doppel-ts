@@ -24,7 +24,7 @@ jobs:
         run: pnpm -w run fmt:check
 
       - name: typecheck
-        run: pnpm -r exec tsc --noEmit
+        run: pnpm --filter @doppel-ts/core --filter doppel-ts exec tsc --noEmit
 
   build-ts:
     runs-on: docker

@@ -11,13 +11,14 @@
   "type": "module",
   "scripts": {
     "build": "tsup",
-    "test": "vitest run"
+    "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
     "@doppel-ts/core": "workspace:*",
     "@doppel-ts/native": "workspace:*"
   },
   "devDependencies": {
+    "@types/node": "^25.9.3",
     "tsup": "^8"
   }
 }

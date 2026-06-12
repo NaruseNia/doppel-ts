@@ -9,8 +9,6 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "outDir": "dist",
-    "rootDir": "src",
     "isolatedModules": true,
     "verbatimModuleSyntax": true
   }
