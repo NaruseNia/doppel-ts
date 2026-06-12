@@ -62,6 +62,20 @@ description = "Run doppel-ts CLI"
 depends = ["build"]
 run = "node packages/cli/dist/index.js"
 
+[tasks."bench:generate"]
+description = "Generate benchmark fixtures"
+run = "npx tsx benchmarks/generate-fixtures.ts"
+
+[tasks."bench:run"]
+description = "Run benchmarks"
+depends = ["build"]
+run = "npx tsx benchmarks/run.ts"
+
+[tasks."bench:save"]
+description = "Run benchmarks and save baseline"
+depends = ["build"]
+run = "npx tsx benchmarks/run.ts --save"
+
 [tasks.ci]
 description = "Run all CI checks"
 depends = ["lint", "fmt:check", "typecheck", "test", "cargo:check", "test:native"]

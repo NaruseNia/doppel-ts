@@ -12,6 +12,7 @@
   "devDependencies": {
     "oxfmt": "^0",
     "oxlint": "^1",
+    "tsx": "^4.22.4",
     "typescript": "~5.8",
     "vitest": "^3"
   },

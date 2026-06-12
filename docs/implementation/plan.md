@@ -23,7 +23,7 @@ doppel-ts v1 の実装を5フェーズに分けて進行する。フェーズ1�
 | 4        | TASK-014: suppress 機能                      | TASK-011, TASK-009                               | S    | ✅ Done    |
 | 5        | TASK-013: 出力フォーマッター                 | TASK-009, TASK-012                               | M    | ✅ Done    |
 | 5        | TASK-015: パイプライン統合・E2E テスト       | TASK-006, TASK-009, TASK-012, TASK-013, TASK-014 | L    | ✅ Done    |
-| 5        | TASK-016: ベンチマーク・パフォーマンス最適化 | TASK-015                                         | M    | 🔲 Ready   |
+| 5        | TASK-016: ベンチマーク・パフォーマンス最適化 | TASK-015                                         | M    | ✅ Done    |
 | 5        | TASK-017: npm 配布・CI 設定                  | TASK-015                                         | M    | ✅ Done    |
 
 ### 決定事項ログ

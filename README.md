@@ -34,10 +34,10 @@ npx doppel-ts src/components --threshold 0.8
 # JSON output (for CI or AI consumption)
 npx doppel-ts src/components --format json
 
-# Lightweight JSON
-npx doppel-ts src/components --format json --minimal
+# Rich JSON with Props, JSX tree, and diff
+npx doppel-ts src/components --format json --detail
 
-# Detailed breakdown
+# Detailed breakdown in terminal
 npx doppel-ts src/components --detail
 ```
 
@@ -99,9 +99,8 @@ CLI flags > doppel.config.ts > defaults
 | `[paths...]`           | Directories or glob patterns to scan (default: cwd) |
 | `--exclude <pattern>`  | Exclude files matching pattern (repeatable)         |
 | `--threshold <number>` | Minimum similarity score (0.0-1.0)                  |
-| `--detail`             | Show per-dimension similarity breakdown             |
+| `--detail`             | Show breakdown (terminal) or rich JSON (json mode)  |
 | `--format <type>`      | Output format: `terminal` (default) or `json`       |
-| `--minimal`            | Lightweight JSON output (with `--format json`)      |
 | `--include-local`      | Include non-exported local components               |
 | `--no-suppress`        | Disable all suppress rules                          |
 | `--help`               | Show help                                           |
@@ -109,30 +108,27 @@ CLI flags > doppel.config.ts > defaults
 
 ## JSON Output
 
-Default JSON output includes rich structural data for each similar pair:
+Default JSON output is lightweight (names, paths, scores):
 
 ```json
 {
   "meta": {
     "version": "1.0.0",
     "totalComponents": 142,
-    "totalPairs": 3,
-    "config": { "...": "..." }
+    "totalPairs": 3
   },
   "pairs": [
     {
       "score": 0.92,
       "level": "high",
-      "breakdown": { "props": 0.95, "jsx": 0.88, "style": 0.9, "behavior": 0.85 },
-      "componentA": { "name": "PrimaryButton", "filePath": "...", "props": ["..."], "jsxTree": {} },
-      "componentB": { "name": "SubmitButton", "filePath": "...", "props": ["..."], "jsxTree": {} },
-      "diff": { "commonProps": ["..."], "uniqueToA": ["..."], "uniqueToB": ["..."] }
+      "a": { "name": "PrimaryButton", "path": "src/components/PrimaryButton.tsx" },
+      "b": { "name": "SubmitButton", "path": "src/components/SubmitButton.tsx" }
     }
   ]
 }
 ```
 
-Use `--minimal` for a lightweight version with just names, paths, and scores.
+Use `--detail` for rich output with Props, JSX tree, breakdown scores, and diff.
 
 ## Suppressing Results
 
