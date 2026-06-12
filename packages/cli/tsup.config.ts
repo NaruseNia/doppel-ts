@@ -5,6 +5,6 @@ export default defineConfig({
   format: ["esm"],
   banner: { js: "#!/usr/bin/env node" },
   clean: true,
-  noExternal: [],
-  external: ["typescript", "tinyglobby", "@clack/prompts", "jiti"],
+  noExternal: [/^(?!@doppel-ts\/native$|^typescript$|^jiti$)/],
+  external: ["typescript", "@doppel-ts/native", "jiti"],
 });

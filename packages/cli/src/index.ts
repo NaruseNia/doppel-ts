@@ -60,8 +60,19 @@ async function main() {
   const result = analyze({ filePaths: files, config });
   s?.stop(`Found ${result.totalComponents} components`);
 
+  if (usingFallback && isTerminal) {
+    log.warn("Native addon not available — using JS fallback (reduced accuracy)");
+  }
   s?.start("Computing similarity...");
-  let pairs: SimilarityPair[] = computeSimilarityStub(result.components);
+  const batchInput = {
+    components: result.components,
+    config: {
+      weights: config.weights,
+      thresholds: Object.entries(config.threshold).map(([name, minScore]) => ({ name, minScore })),
+      filterThreshold: 0.0,
+    },
+  };
+  let pairs: SimilarityPair[] = computeSimilarity(result.components, batchInput);
   pairs = filterSuppressed(pairs, config.suppress) as SimilarityPair[];
   s?.stop(`Found ${pairs.length} similar pairs`);
 
@@ -82,8 +93,47 @@ async function main() {
   }
 }
 
-function computeSimilarityStub(components: NormalizedComponentData[]): SimilarityPair[] {
-  // Placeholder until @doppel-ts/native is built and linked
+import { createRequire } from "node:module";
+const _require = createRequire(import.meta.url);
+
+let nativeModule: { computeSimilarity: (json: string) => string } | null = null;
+let usingFallback = false;
+try {
+  nativeModule = _require("@doppel-ts/native");
+} catch {
+  usingFallback = true;
+}
+
+function computeSimilarity(
+  components: NormalizedComponentData[],
+  batchInput: unknown,
+): SimilarityPair[] {
+  if (nativeModule) {
+    const resultJson = nativeModule.computeSimilarity(JSON.stringify(batchInput));
+    const result = JSON.parse(resultJson) as {
+      results: Array<{
+        pair: [string, string];
+        overallScore: number;
+        breakdown: { props: number; jsx: number; style?: number; behavior?: number };
+        level: string;
+      }>;
+    };
+    return result.results.map((r) => {
+      const compA = components.find((c) => c.id === r.pair[0]);
+      const compB = components.find((c) => c.id === r.pair[1]);
+      return {
+        score: r.overallScore,
+        level: r.level,
+        breakdown: r.breakdown,
+        componentA: toSummary(compA ?? components[0]),
+        componentB: toSummary(compB ?? components[1]),
+      };
+    });
+  }
+  return computeFallback(components);
+}
+
+function computeFallback(components: NormalizedComponentData[]): SimilarityPair[] {
   const pairs: SimilarityPair[] = [];
   for (let i = 0; i < components.length; i++) {
     for (let j = i + 1; j < components.length; j++) {
