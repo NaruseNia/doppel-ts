@@ -18,6 +18,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "jiti": "^2.7.0",
     "typescript": "~5.8"
   },
   "devDependencies": {

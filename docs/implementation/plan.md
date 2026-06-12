@@ -11,7 +11,7 @@ doppel-ts v1 の実装を5フェーズに分けて進行する。フェーズ1�
 | 1        | TASK-001: monorepo 基盤構築                  | -                                                | M    | ✅ Done    |
 | 2        | TASK-002: パーサー抽象レイヤー設計・実装     | TASK-001                                         | M    | ✅ Done    |
 | 2        | TASK-007: Rust ネイティブアドオン基盤        | TASK-001                                         | M    | ✅ Done    |
-| 2        | TASK-011: 設定ファイルローダー               | TASK-001                                         | M    | 🔲 Ready   |
+| 2        | TASK-011: 設定ファイルローダー               | TASK-001                                         | M    | ✅ Done    |
 | 3        | TASK-003: React コンポーネント検出           | TASK-002                                         | L    | 🔲 Ready   |
 | 3        | TASK-008: 特徴ベクトル生成（Rust）           | TASK-007                                         | L    | 🔲 Ready   |
 | 3        | TASK-004: Props 型抽出                       | TASK-002, TASK-003                               | L    | ⏳ Blocked |
@@ -19,7 +19,7 @@ doppel-ts v1 の実装を5フェーズに分けて進行する。フェーズ1�
 | 3        | TASK-009: 類似度計算エンジン（Rust）         | TASK-008                                         | L    | ⏳ Blocked |
 | 4        | TASK-006: 構造データ正規化                   | TASK-004, TASK-005                               | M    | ⏳ Blocked |
 | 4        | TASK-010: 多段階閾値判定・重み付け           | TASK-009                                         | S    | ⏳ Blocked |
-| 4        | TASK-012: CLI 実装                           | TASK-011                                         | M    | ⏳ Blocked |
+| 4        | TASK-012: CLI 実装                           | TASK-011                                         | M    | 🔲 Ready   |
 | 4        | TASK-014: suppress 機能                      | TASK-011, TASK-009                               | S    | ⏳ Blocked |
 | 5        | TASK-013: 出力フォーマッター                 | TASK-009, TASK-012                               | M    | ⏳ Blocked |
 | 5        | TASK-015: パイプライン統合・E2E テスト       | TASK-006, TASK-009, TASK-012, TASK-013, TASK-014 | L    | ⏳ Blocked |
