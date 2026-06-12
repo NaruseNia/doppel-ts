@@ -8,6 +8,9 @@ on:
 permissions:
   contents: write
 
+env:
+  CI: ""
+
 jobs:
   build-native:
     strategy:
@@ -26,6 +29,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
@@ -33,8 +40,6 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
-
-      - run: corepack enable && corepack prepare pnpm@latest --activate
 
       - run: pnpm install --no-frozen-lockfile
 
@@ -55,12 +60,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
           registry-url: "https://registry.npmjs.org"
-
-      - run: corepack enable && corepack prepare pnpm@latest --activate
 
       - run: pnpm install --no-frozen-lockfile
 
