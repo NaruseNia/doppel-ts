@@ -4,62 +4,52 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
+
+env:
+  MISE_EXPERIMENTAL: 1
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   lint:
     runs-on: docker
-    container: node:22
     steps:
       - uses: actions/checkout@v4
-
-      - run: corepack enable && corepack prepare pnpm@latest --activate
-
-      - run: pnpm install --frozen-lockfile
-
-      - name: oxlint
-        run: pnpm -w run lint
-
-      - name: oxfmt
-        run: pnpm -w run fmt:check
-
-      - name: Build core (for cli type resolution)
-        run: pnpm --filter @doppel-ts/core build
-
-      - name: typecheck
-        run: pnpm --filter @doppel-ts/core --filter doppel-ts exec tsc --noEmit
+      - uses: https://github.com/jdx/mise-action@v2
+      - run: mise run install
+      - run: mise run lint
+      - run: mise run fmt:check
+      - run: mise run typecheck
 
   build-ts:
     runs-on: docker
-    strategy:
-      matrix:
-        node-version: ["20", "22"]
-    container: node:${{ matrix.node-version }}
     steps:
       - uses: actions/checkout@v4
-
-      - run: corepack enable && corepack prepare pnpm@latest --activate
-
-      - run: pnpm install --frozen-lockfile
-
-      - name: Build core & cli
-        run: pnpm --filter @doppel-ts/core --filter doppel-ts build
-
-      - name: Test
-        run: pnpm --filter @doppel-ts/core --filter doppel-ts test
+      - uses: https://github.com/jdx/mise-action@v2
+      - run: mise run install
+      - run: mise run build
+      - run: mise run test
 
   build-native:
     runs-on: docker
     steps:
       - uses: actions/checkout@v4
+      - uses: https://github.com/jdx/mise-action@v2
+      - run: mise run cargo:check
+      - run: mise run test:native
 
-      - name: Install Rust
-        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
-
-      - name: Cargo check
-        working-directory: packages/native
-        run: . "$HOME/.cargo/env" && cargo check
-
-      - name: Cargo test
-        working-directory: packages/native
-        run: . "$HOME/.cargo/env" && cargo test
+  ci:
+    needs: [lint, build-ts, build-native]
+    runs-on: docker
+    if: always()
+    steps:
+      - name: Check results
+        run: |
+          if [[ "${{ needs.lint.result }}" != "success" \
+             || "${{ needs.build-ts.result }}" != "success" \
+             || "${{ needs.build-native.result }}" != "success" ]]; then
+            echo "::error::one or more required jobs failed"
+            exit 1
+          fi
