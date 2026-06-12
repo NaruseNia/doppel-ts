@@ -4,7 +4,6 @@ export interface CliArgs {
   threshold?: number;
   detail: boolean;
   format: "terminal" | "json";
-  minimal: boolean;
   includeLocal: boolean;
   noSuppress: boolean;
   help: boolean;
@@ -17,7 +16,6 @@ export function parseArgs(argv: string[]): CliArgs {
     exclude: [],
     detail: false,
     format: "terminal",
-    minimal: false,
     includeLocal: false,
     noSuppress: false,
     help: false,
@@ -34,8 +32,6 @@ export function parseArgs(argv: string[]): CliArgs {
       args.version = true;
     } else if (arg === "--detail") {
       args.detail = true;
-    } else if (arg === "--minimal") {
-      args.minimal = true;
     } else if (arg === "--include-local") {
       args.includeLocal = true;
     } else if (arg === "--no-suppress") {
@@ -73,9 +69,8 @@ Arguments:
 Options:
   --exclude <pattern>       Exclude files matching pattern (repeatable)
   --threshold <number>      Minimum similarity score (0.0-1.0)
-  --detail                  Show per-dimension similarity breakdown
+  --detail                  Show per-dimension breakdown (terminal) or rich JSON (json)
   --format <type>           Output format: terminal (default) or json
-  --minimal                 Lightweight JSON output (with --format json)
   --include-local           Include non-exported local components
   --no-suppress             Disable all suppress rules
   -h, --help                Show help

@@ -1,5 +1,8 @@
 node_modules/
 .pnpm-store/
+fixtures/small/
+fixtures/medium/
+fixtures/large/
 dist/
 target/
 *.node

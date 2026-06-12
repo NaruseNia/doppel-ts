@@ -1,0 +1,20 @@
+[
+  {
+    "name": "small",
+    "components": 100,
+    "pairs": 4,
+    "durationMs": 819
+  },
+  {
+    "name": "medium",
+    "components": 500,
+    "pairs": 77,
+    "durationMs": 2033
+  },
+  {
+    "name": "large",
+    "components": 2000,
+    "pairs": 986,
+    "durationMs": 20969
+  }
+]

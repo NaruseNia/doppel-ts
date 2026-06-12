@@ -34,8 +34,8 @@ npx doppel-ts src/components --threshold 0.8
 # JSON 出力（CI や AI 連携向け）
 npx doppel-ts src/components --format json
 
-# 軽量 JSON
-npx doppel-ts src/components --format json --minimal
+# リッチ JSON（Props, JSXツリー, 差分付き）
+npx doppel-ts src/components --format json --detail
 
 # 詳細内訳を表示
 npx doppel-ts src/components --detail
@@ -99,9 +99,8 @@ CLI フラグ > doppel.config.ts > デフォルト値
 | `[paths...]`           | スキャン対象のディレクトリまたは glob パターン（デフォルト: cwd） |
 | `--exclude <pattern>`  | 除外パターン（複数指定可）                                        |
 | `--threshold <number>` | 最小類似度スコア（0.0-1.0）                                       |
-| `--detail`             | 指標別の類似度内訳を表示                                          |
+| `--detail`             | 内訳表示（terminal）/ リッチJSON（json モード）                   |
 | `--format <type>`      | 出力形式: `terminal`（デフォルト）または `json`                   |
-| `--minimal`            | 軽量 JSON 出力（`--format json` と併用）                          |
 | `--include-local`      | エクスポートされていないローカルコンポーネントも対象に含める      |
 | `--no-suppress`        | suppress ルールを無効化                                           |
 | `--help`               | ヘルプ表示                                                        |
@@ -109,30 +108,27 @@ CLI フラグ > doppel.config.ts > デフォルト値
 
 ## JSON 出力
 
-デフォルトの JSON 出力は、各類似ペアのリッチな構造データを含みます:
+デフォルトの JSON 出力は軽量版（名前・パス・スコアのみ）:
 
 ```json
 {
   "meta": {
     "version": "1.0.0",
     "totalComponents": 142,
-    "totalPairs": 3,
-    "config": { "...": "..." }
+    "totalPairs": 3
   },
   "pairs": [
     {
       "score": 0.92,
       "level": "high",
-      "breakdown": { "props": 0.95, "jsx": 0.88, "style": 0.9, "behavior": 0.85 },
-      "componentA": { "name": "PrimaryButton", "filePath": "...", "props": ["..."], "jsxTree": {} },
-      "componentB": { "name": "SubmitButton", "filePath": "...", "props": ["..."], "jsxTree": {} },
-      "diff": { "commonProps": ["..."], "uniqueToA": ["..."], "uniqueToB": ["..."] }
+      "a": { "name": "PrimaryButton", "path": "src/components/PrimaryButton.tsx" },
+      "b": { "name": "SubmitButton", "path": "src/components/SubmitButton.tsx" }
     }
   ]
 }
 ```
 
-`--minimal` を使用すると、名前・パス・スコアのみの軽量版を出力します。
+`--detail` を使用すると、Props・JSXツリー・内訳スコア・差分を含むリッチ版を出力します。
 
 ## 結果の抑制
 

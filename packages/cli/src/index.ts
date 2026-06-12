@@ -88,7 +88,7 @@ async function main() {
     formatTerminal(output, args.detail);
     outro("Done");
   } else {
-    const json = args.minimal ? formatMinimalJson(output) : formatRichJson(output);
+    const json = args.detail ? formatRichJson(output) : formatMinimalJson(output);
     console.log(json);
   }
 }
