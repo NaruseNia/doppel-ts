@@ -24,8 +24,8 @@ jobs:
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          pnpm --filter @doppel-ts/core exec npm version "$VERSION" --no-git-tag-version
-          pnpm --filter doppel-ts exec npm version "$VERSION" --no-git-tag-version
+          pnpm --filter @doppel-ts/core exec npm version "$VERSION" --no-git-tag-version --allow-same-version
+          pnpm --filter doppel-ts exec npm version "$VERSION" --no-git-tag-version --allow-same-version
 
       - name: Publish @doppel-ts/core
         run: pnpm --filter @doppel-ts/core publish --access public --no-git-checks
