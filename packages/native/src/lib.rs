@@ -1,4 +1,5 @@
 mod batch;
+pub mod similarity;
 mod types;
 pub mod vector;
 

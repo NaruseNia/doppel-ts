@@ -1,14 +1,8 @@
-use crate::types::{BatchInput, BatchOutput, SimilarityResult};
+use crate::similarity;
+use crate::types::{BatchInput, BatchOutput};
 
 pub fn process_batch(input: BatchInput) -> BatchOutput {
-    let _components = &input.components;
-    let _config = &input.config;
-
-    // TASK-008: feature vector generation
-    // TASK-009: cosine similarity filtering + tree edit distance
-
-    let results: Vec<SimilarityResult> = vec![];
-
+    let results = similarity::compute_all_similarities(&input.components, &input.config);
     BatchOutput { results }
 }
 
