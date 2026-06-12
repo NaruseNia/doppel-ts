@@ -1,5 +1,6 @@
 mod batch;
 mod types;
+pub mod vector;
 
 use napi_derive::napi;
 use types::{BatchInput, BatchOutput};
