@@ -17,10 +17,10 @@ doppel-ts v1 の実装を5フェーズに分けて進行する。フェーズ1�
 | 3        | TASK-004: Props 型抽出                       | TASK-002, TASK-003                               | L    | ✅ Done    |
 | 3        | TASK-005: JSX ツリー抽出・正規化             | TASK-002, TASK-003                               | L    | ✅ Done    |
 | 3        | TASK-009: 類似度計算エンジン（Rust）         | TASK-008                                         | L    | ✅ Done    |
-| 4        | TASK-006: 構造データ正規化                   | TASK-004, TASK-005                               | M    | 🔲 Ready   |
-| 4        | TASK-010: 多段階閾値判定・重み付け           | TASK-009                                         | S    | 🔲 Ready   |
+| 4        | TASK-006: 構造データ正規化                   | TASK-004, TASK-005                               | M    | ✅ Done    |
+| 4        | TASK-010: 多段階閾値判定・重み付け           | TASK-009                                         | S    | ✅ Done    |
 | 4        | TASK-012: CLI 実装                           | TASK-011                                         | M    | 🔲 Ready   |
-| 4        | TASK-014: suppress 機能                      | TASK-011, TASK-009                               | S    | 🔲 Ready   |
+| 4        | TASK-014: suppress 機能                      | TASK-011, TASK-009                               | S    | ✅ Done    |
 | 5        | TASK-013: 出力フォーマッター                 | TASK-009, TASK-012                               | M    | ⏳ Blocked |
 | 5        | TASK-015: パイプライン統合・E2E テスト       | TASK-006, TASK-009, TASK-012, TASK-013, TASK-014 | L    | ⏳ Blocked |
 | 5        | TASK-016: ベンチマーク・パフォーマンス最適化 | TASK-015                                         | M    | ⏳ Blocked |
