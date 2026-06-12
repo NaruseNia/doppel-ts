@@ -23,6 +23,9 @@ jobs:
       - name: oxfmt
         run: pnpm -w run fmt:check
 
+      - name: Build core (for cli type resolution)
+        run: pnpm --filter @doppel-ts/core build
+
       - name: typecheck
         run: pnpm --filter @doppel-ts/core --filter doppel-ts exec tsc --noEmit
 
@@ -47,9 +50,10 @@ jobs:
 
   build-native:
     runs-on: docker
-    container: rust:latest
     steps:
       - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
 
       - name: Cargo check
         working-directory: packages/native
