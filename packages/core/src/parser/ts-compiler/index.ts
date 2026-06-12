@@ -5,6 +5,7 @@ import type { PropsInfo } from "../../types/props.js";
 import type { NormalizedJSXTree } from "../../types/jsx.js";
 import { detectComponents } from "../../detector/index.js";
 import { extractProps as extractPropsImpl } from "../../extractor/props.js";
+import { extractJSXTree as extractJSXTreeImpl } from "../../extractor/jsx-tree.js";
 
 export class TS6CompilerParser implements ParserInterface {
   private program: ts.Program;
@@ -35,9 +36,8 @@ export class TS6CompilerParser implements ParserInterface {
     return extractPropsImpl(component, this.program, this.checker);
   }
 
-  extractJSXTree(_component: ComponentInfo): NormalizedJSXTree {
-    // TASK-005 で実装
-    return { root: { kind: "fragment", children: [] } };
+  extractJSXTree(component: ComponentInfo): NormalizedJSXTree {
+    return extractJSXTreeImpl(component, this.program);
   }
 
   dispose(): void {
