@@ -61,11 +61,11 @@ Found 3 similar pairs (2 high, 1 medium) across 142 components.
 プロジェクトルートに `doppel.config.ts` を作成:
 
 ```typescript
-import { defineConfig } from 'doppel-ts';
+import { defineConfig } from "doppel-ts";
 
 export default defineConfig({
-  include: ['src/components/**/*.tsx'],
-  exclude: ['**/*.test.tsx', '**/*.stories.tsx'],
+  include: ["src/components/**/*.tsx"],
+  exclude: ["**/*.test.tsx", "**/*.stories.tsx"],
 
   threshold: {
     high: 0.9,
@@ -80,8 +80,8 @@ export default defineConfig({
   },
 
   suppress: [
-    ['BaseButton', 'IconButton'],
-    ['*Layout*', '*Container*'],
+    ["BaseButton", "IconButton"],
+    ["*Layout*", "*Container*"],
   ],
 });
 ```
@@ -94,18 +94,18 @@ CLI フラグ > doppel.config.ts > デフォルト値
 
 ## CLI オプション
 
-| フラグ | 説明 |
-|------|------|
-| `[paths...]` | スキャン対象のディレクトリまたは glob パターン（デフォルト: cwd） |
-| `--exclude <pattern>` | 除外パターン（複数指定可） |
-| `--threshold <number>` | 最小類似度スコア（0.0-1.0） |
-| `--detail` | 指標別の類似度内訳を表示 |
-| `--format <type>` | 出力形式: `terminal`（デフォルト）または `json` |
-| `--minimal` | 軽量 JSON 出力（`--format json` と併用） |
-| `--include-local` | エクスポートされていないローカルコンポーネントも対象に含める |
-| `--no-suppress` | suppress ルールを無効化 |
-| `--help` | ヘルプ表示 |
-| `--version` | バージョン表示 |
+| フラグ                 | 説明                                                              |
+| ---------------------- | ----------------------------------------------------------------- |
+| `[paths...]`           | スキャン対象のディレクトリまたは glob パターン（デフォルト: cwd） |
+| `--exclude <pattern>`  | 除外パターン（複数指定可）                                        |
+| `--threshold <number>` | 最小類似度スコア（0.0-1.0）                                       |
+| `--detail`             | 指標別の類似度内訳を表示                                          |
+| `--format <type>`      | 出力形式: `terminal`（デフォルト）または `json`                   |
+| `--minimal`            | 軽量 JSON 出力（`--format json` と併用）                          |
+| `--include-local`      | エクスポートされていないローカルコンポーネントも対象に含める      |
+| `--no-suppress`        | suppress ルールを無効化                                           |
+| `--help`               | ヘルプ表示                                                        |
+| `--version`            | バージョン表示                                                    |
 
 ## JSON 出力
 
@@ -117,13 +117,13 @@ CLI フラグ > doppel.config.ts > デフォルト値
     "version": "1.0.0",
     "totalComponents": 142,
     "totalPairs": 3,
-    "config": { "..." : "..." }
+    "config": { "...": "..." }
   },
   "pairs": [
     {
       "score": 0.92,
       "level": "high",
-      "breakdown": { "props": 0.95, "jsx": 0.88, "style": 0.90, "behavior": 0.85 },
+      "breakdown": { "props": 0.95, "jsx": 0.88, "style": 0.9, "behavior": 0.85 },
       "componentA": { "name": "PrimaryButton", "filePath": "...", "props": ["..."], "jsxTree": {} },
       "componentB": { "name": "SubmitButton", "filePath": "...", "props": ["..."], "jsxTree": {} },
       "diff": { "commonProps": ["..."], "uniqueToA": ["..."], "uniqueToB": ["..."] }
@@ -141,8 +141,8 @@ CLI フラグ > doppel.config.ts > デフォルト値
 ```typescript
 export default defineConfig({
   suppress: [
-    ['BaseButton', 'IconButton'],    // 名前指定
-    ['*Layout*', '*Container*'],     // glob パターン
+    ["BaseButton", "IconButton"], // 名前指定
+    ["*Layout*", "*Container*"], // glob パターン
   ],
 });
 ```
