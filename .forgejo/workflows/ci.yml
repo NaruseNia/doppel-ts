@@ -8,16 +8,12 @@ on:
 
 jobs:
   lint:
-    runs-on: codeberg-small
+    runs-on: docker
+    container: node:22
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: pnpm
+      - run: corepack enable && corepack prepare pnpm@latest --activate
 
       - run: pnpm install --frozen-lockfile
 
@@ -27,43 +23,43 @@ jobs:
       - name: oxfmt
         run: pnpm -w run fmt:check
 
+      - name: Build core (for cli type resolution)
+        run: pnpm --filter @doppel-ts/core build
+
       - name: typecheck
-        run: pnpm -r exec tsc --noEmit
+        run: pnpm --filter @doppel-ts/core --filter doppel-ts exec tsc --noEmit
 
   build-ts:
-    runs-on: codeberg-small
+    runs-on: docker
     strategy:
       matrix:
         node-version: ["20", "22"]
+    container: node:${{ matrix.node-version }}
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: pnpm
+      - run: corepack enable && corepack prepare pnpm@latest --activate
 
       - run: pnpm install --frozen-lockfile
 
       - name: Build core & cli
-        run: pnpm -r build
+        run: pnpm --filter @doppel-ts/core --filter doppel-ts build
 
       - name: Test
-        run: pnpm -r test
+        run: pnpm --filter @doppel-ts/core --filter doppel-ts test
 
   build-native:
-    runs-on: codeberg-small
+    runs-on: docker
     steps:
       - uses: actions/checkout@v4
 
-      - uses: dtolnay/rust-toolchain@stable
+      - name: Install Rust
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
 
       - name: Cargo check
         working-directory: packages/native
-        run: cargo check
+        run: . "$HOME/.cargo/env" && cargo check
 
       - name: Cargo test
         working-directory: packages/native
-        run: cargo test
+        run: . "$HOME/.cargo/env" && cargo test

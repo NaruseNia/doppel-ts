@@ -1,21 +1,24 @@
 {
   "name": "doppel-ts",
   "version": "0.0.0",
-  "type": "module",
   "license": "MIT OR Apache-2.0",
   "bin": {
     "doppel-ts": "./dist/index.js"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
+  "type": "module",
   "scripts": {
     "build": "tsup",
-    "test": "vitest run"
+    "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
     "@doppel-ts/core": "workspace:*",
     "@doppel-ts/native": "workspace:*"
   },
   "devDependencies": {
+    "@types/node": "^25.9.3",
     "tsup": "^8"
   }
 }

@@ -12,16 +12,16 @@ doppel-ts の内部データモデルとJSON出力スキーマを定義する。
 
 ```typescript
 interface ComponentInfo {
-  name: string;                    // コンポーネント名
-  filePath: string;                // ファイルパス
-  line: number;                    // 定義開始行
-  column: number;                  // 定義開始列
-  exportType: 'named' | 'default'; // エクスポート種別
-  wrappers: WrapperType[];         // ラッパー（memo, forwardRef, HOC）
-  isLocal: boolean;                // ローカルコンポーネントか
+  name: string; // コンポーネント名
+  filePath: string; // ファイルパス
+  line: number; // 定義開始行
+  column: number; // 定義開始列
+  exportType: "named" | "default"; // エクスポート種別
+  wrappers: WrapperType[]; // ラッパー（memo, forwardRef, HOC）
+  isLocal: boolean; // ローカルコンポーネントか
 }
 
-type WrapperType = 'memo' | 'forwardRef' | { hoc: string };
+type WrapperType = "memo" | "forwardRef" | { hoc: string };
 ```
 
 ### PropsInfo
@@ -31,27 +31,27 @@ Props 型情報。
 ```typescript
 interface PropsInfo {
   properties: PropProperty[];
-  hasChildren: boolean;            // children prop の有無
-  hasRef: boolean;                 // ref prop の有無（forwardRef）
+  hasChildren: boolean; // children prop の有無
+  hasRef: boolean; // ref prop の有無（forwardRef）
 }
 
 interface PropProperty {
-  name: string;                    // プロパティ名
-  type: TypeDescriptor;            // 型情報
-  optional: boolean;               // オプショナルか
-  defaultValue?: string;           // デフォルト値（ある場合）
+  name: string; // プロパティ名
+  type: TypeDescriptor; // 型情報
+  optional: boolean; // オプショナルか
+  defaultValue?: string; // デフォルト値（ある場合）
 }
 
 type TypeDescriptor =
-  | { kind: 'primitive'; name: string }                    // string, number, boolean
-  | { kind: 'literal'; value: string }                     // "dark" | "light"
-  | { kind: 'union'; members: TypeDescriptor[] }           // A | B
-  | { kind: 'intersection'; members: TypeDescriptor[] }    // A & B
-  | { kind: 'array'; element: TypeDescriptor }             // T[]
-  | { kind: 'function'; params: TypeDescriptor[]; returnType: TypeDescriptor }
-  | { kind: 'object'; properties: PropProperty[] }         // { key: value }
-  | { kind: 'reference'; name: string }                    // 外部型参照
-  | { kind: 'generic'; name: string; args: TypeDescriptor[] };
+  | { kind: "primitive"; name: string } // string, number, boolean
+  | { kind: "literal"; value: string } // "dark" | "light"
+  | { kind: "union"; members: TypeDescriptor[] } // A | B
+  | { kind: "intersection"; members: TypeDescriptor[] } // A & B
+  | { kind: "array"; element: TypeDescriptor } // T[]
+  | { kind: "function"; params: TypeDescriptor[]; returnType: TypeDescriptor }
+  | { kind: "object"; properties: PropProperty[] } // { key: value }
+  | { kind: "reference"; name: string } // 外部型参照
+  | { kind: "generic"; name: string; args: TypeDescriptor[] };
 ```
 
 ### NormalizedJSXTree
@@ -63,38 +63,34 @@ interface NormalizedJSXTree {
   root: JSXNode;
 }
 
-type JSXNode =
-  | JSXElementNode
-  | JSXFragmentNode
-  | JSXTextNode
-  | JSXExpressionNode;
+type JSXNode = JSXElementNode | JSXFragmentNode | JSXTextNode | JSXExpressionNode;
 
 interface JSXElementNode {
-  kind: 'element';
-  tag: string;                     // タグ名（div, Button 等）
-  attributes: JSXAttribute[];      // 属性
-  children: JSXNode[];             // 子要素
-  isComponent: boolean;            // カスタムコンポーネントか HTML 要素か
+  kind: "element";
+  tag: string; // タグ名（div, Button 等）
+  attributes: JSXAttribute[]; // 属性
+  children: JSXNode[]; // 子要素
+  isComponent: boolean; // カスタムコンポーネントか HTML 要素か
 }
 
 interface JSXFragmentNode {
-  kind: 'fragment';
+  kind: "fragment";
   children: JSXNode[];
 }
 
 interface JSXTextNode {
-  kind: 'text';
+  kind: "text";
 }
 
 interface JSXExpressionNode {
-  kind: 'expression';
-  expressionType: 'conditional' | 'map' | 'call' | 'other';
-  children: JSXNode[];             // 内部に含まれる JSX
+  kind: "expression";
+  expressionType: "conditional" | "map" | "call" | "other";
+  children: JSXNode[]; // 内部に含まれる JSX
 }
 
 interface JSXAttribute {
   name: string;
-  valueType: 'string' | 'expression' | 'spread' | 'boolean';
+  valueType: "string" | "expression" | "spread" | "boolean";
 }
 ```
 
@@ -104,7 +100,7 @@ Rust に渡す正規化済みデータ。JSON シリアライズ可能。
 
 ```typescript
 interface NormalizedComponentData {
-  id: string;                      // 一意な識別子（filePath:name）
+  id: string; // 一意な識別子（filePath:name）
   name: string;
   filePath: string;
   line: number;
@@ -117,7 +113,7 @@ interface NormalizedComponentData {
 interface NormalizedProps {
   properties: Array<{
     name: string;
-    typeSignature: string;         // 正規化された型シグネチャ文字列
+    typeSignature: string; // 正規化された型シグネチャ文字列
     optional: boolean;
   }>;
   propertyCount: number;
@@ -131,8 +127,8 @@ interface NormalizedStyleInfo {
 
 interface NormalizedBehaviorInfo {
   hooks: Array<{
-    name: string;                  // useState, useEffect 等
-    depsCount?: number;            // 依存配列の要素数
+    name: string; // useState, useEffect 等
+    depsCount?: number; // 依存配列の要素数
   }>;
 }
 ```
@@ -190,7 +186,7 @@ pub struct ScoreBreakdown {
       "breakdown": {
         "props": 0.95,
         "jsx": 0.88,
-        "style": 0.90,
+        "style": 0.9,
         "behavior": 0.85
       },
       "componentA": {
@@ -251,11 +247,11 @@ pub struct ScoreBreakdown {
 ### doppel.config.ts
 
 ```typescript
-import { defineConfig } from 'doppel-ts';
+import { defineConfig } from "doppel-ts";
 
 export default defineConfig({
-  include: ['src/components/**/*.tsx'],
-  exclude: ['**/*.test.tsx', '**/*.stories.tsx'],
+  include: ["src/components/**/*.tsx"],
+  exclude: ["**/*.test.tsx", "**/*.stories.tsx"],
 
   threshold: {
     high: 0.9,
@@ -270,8 +266,8 @@ export default defineConfig({
   },
 
   suppress: [
-    ['BaseButton', 'IconButton'],              // 名前指定
-    ['*Layout*', '*Container*'],               // glob パターン
+    ["BaseButton", "IconButton"], // 名前指定
+    ["*Layout*", "*Container*"], // glob パターン
   ],
 
   includeLocal: false,

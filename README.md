@@ -61,11 +61,11 @@ Found 3 similar pairs (2 high, 1 medium) across 142 components.
 Create `doppel.config.ts` in your project root:
 
 ```typescript
-import { defineConfig } from 'doppel-ts';
+import { defineConfig } from "doppel-ts";
 
 export default defineConfig({
-  include: ['src/components/**/*.tsx'],
-  exclude: ['**/*.test.tsx', '**/*.stories.tsx'],
+  include: ["src/components/**/*.tsx"],
+  exclude: ["**/*.test.tsx", "**/*.stories.tsx"],
 
   threshold: {
     high: 0.9,
@@ -80,8 +80,8 @@ export default defineConfig({
   },
 
   suppress: [
-    ['BaseButton', 'IconButton'],
-    ['*Layout*', '*Container*'],
+    ["BaseButton", "IconButton"],
+    ["*Layout*", "*Container*"],
   ],
 });
 ```
@@ -94,18 +94,18 @@ CLI flags > doppel.config.ts > defaults
 
 ## CLI Options
 
-| Flag | Description |
-|------|-------------|
-| `[paths...]` | Directories or glob patterns to scan (default: cwd) |
-| `--exclude <pattern>` | Exclude files matching pattern (repeatable) |
-| `--threshold <number>` | Minimum similarity score (0.0-1.0) |
-| `--detail` | Show per-dimension similarity breakdown |
-| `--format <type>` | Output format: `terminal` (default) or `json` |
-| `--minimal` | Lightweight JSON output (with `--format json`) |
-| `--include-local` | Include non-exported local components |
-| `--no-suppress` | Disable all suppress rules |
-| `--help` | Show help |
-| `--version` | Show version |
+| Flag                   | Description                                         |
+| ---------------------- | --------------------------------------------------- |
+| `[paths...]`           | Directories or glob patterns to scan (default: cwd) |
+| `--exclude <pattern>`  | Exclude files matching pattern (repeatable)         |
+| `--threshold <number>` | Minimum similarity score (0.0-1.0)                  |
+| `--detail`             | Show per-dimension similarity breakdown             |
+| `--format <type>`      | Output format: `terminal` (default) or `json`       |
+| `--minimal`            | Lightweight JSON output (with `--format json`)      |
+| `--include-local`      | Include non-exported local components               |
+| `--no-suppress`        | Disable all suppress rules                          |
+| `--help`               | Show help                                           |
+| `--version`            | Show version                                        |
 
 ## JSON Output
 
@@ -117,13 +117,13 @@ Default JSON output includes rich structural data for each similar pair:
     "version": "1.0.0",
     "totalComponents": 142,
     "totalPairs": 3,
-    "config": { "..." : "..." }
+    "config": { "...": "..." }
   },
   "pairs": [
     {
       "score": 0.92,
       "level": "high",
-      "breakdown": { "props": 0.95, "jsx": 0.88, "style": 0.90, "behavior": 0.85 },
+      "breakdown": { "props": 0.95, "jsx": 0.88, "style": 0.9, "behavior": 0.85 },
       "componentA": { "name": "PrimaryButton", "filePath": "...", "props": ["..."], "jsxTree": {} },
       "componentB": { "name": "SubmitButton", "filePath": "...", "props": ["..."], "jsxTree": {} },
       "diff": { "commonProps": ["..."], "uniqueToA": ["..."], "uniqueToB": ["..."] }
@@ -141,8 +141,8 @@ Use `--minimal` for a lightweight version with just names, paths, and scores.
 ```typescript
 export default defineConfig({
   suppress: [
-    ['BaseButton', 'IconButton'],    // exact names
-    ['*Layout*', '*Container*'],     // glob patterns
+    ["BaseButton", "IconButton"], // exact names
+    ["*Layout*", "*Container*"], // glob patterns
   ],
 });
 ```
