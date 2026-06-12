@@ -69,6 +69,7 @@ async function main() {
     config: {
       weights: config.weights,
       thresholds: Object.entries(config.threshold).map(([name, minScore]) => ({ name, minScore })),
+      filterThreshold: 0.0,
     },
   };
   let pairs: SimilarityPair[] = computeSimilarity(result.components, batchInput);
@@ -92,10 +93,13 @@ async function main() {
   }
 }
 
+import { createRequire } from "node:module";
+const _require = createRequire(import.meta.url);
+
 let nativeModule: { computeSimilarity: (json: string) => string } | null = null;
 let usingFallback = false;
 try {
-  nativeModule = require("@doppel-ts/native");
+  nativeModule = _require("@doppel-ts/native");
 } catch {
   usingFallback = true;
 }

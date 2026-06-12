@@ -59,6 +59,17 @@ export class Counter extends React.Component<{ initial: number }> {
   }
 }
 
+// Near-duplicate of Button (same structure, different prop name)
+export function SubmitButton({
+  onSubmit,
+  children,
+}: {
+  onSubmit: () => void;
+  children: React.ReactNode;
+}) {
+  return <button onClick={onSubmit}>{children}</button>;
+}
+
 // Non-component export (should NOT be detected)
 export function formatDate(date: Date): string {
   return date.toISOString();

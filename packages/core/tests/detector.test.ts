@@ -95,6 +95,7 @@ describe("detectComponents", () => {
       "InputField",
       "InternalCard",
       "MemoButton",
+      "SubmitButton",
       "ThemedHeader",
     ]);
   });
