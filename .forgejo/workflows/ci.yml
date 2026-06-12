@@ -40,10 +40,10 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Build core & cli
-        run: pnpm -r build
+        run: pnpm --filter @doppel-ts/core --filter doppel-ts build
 
       - name: Test
-        run: pnpm -r test
+        run: pnpm --filter @doppel-ts/core --filter doppel-ts test
 
   build-native:
     runs-on: docker
