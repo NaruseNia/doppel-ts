@@ -24,7 +24,7 @@ export function resolveTypeDescriptor(
   if (type.isStringLiteral()) return { kind: "literal", value: `"${type.value}"` };
   if (type.isNumberLiteral()) return { kind: "literal", value: String(type.value) };
   if (type.getFlags() & ts.TypeFlags.BooleanLiteral) {
-    return { kind: "literal", value: (type as ts.IntrinsicType).intrinsicName };
+    return { kind: "literal", value: checker.typeToString(type) };
   }
 
   const typeStr = checker.typeToString(type);
@@ -81,9 +81,10 @@ export function resolveProperties(
   return symbols
     .filter((s) => !(s.getFlags() & ts.SymbolFlags.Method && s.getName() === "render"))
     .map((symbol) => {
-      const propType =
-        checker.getTypeOfPropertyOfType(parentType, symbol.getName()) ??
-        checker.getTypeOfSymbol(symbol);
+      const propSymbol = checker.getPropertyOfType(parentType, symbol.getName());
+      const propType = propSymbol
+        ? checker.getTypeOfSymbol(propSymbol)
+        : checker.getTypeOfSymbol(symbol);
       const optional = (symbol.getFlags() & ts.SymbolFlags.Optional) !== 0;
 
       return {

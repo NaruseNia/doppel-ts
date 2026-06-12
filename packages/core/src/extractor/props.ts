@@ -26,7 +26,7 @@ export function extractProps(
 }
 
 function getPropsType(fn: ts.SignatureDeclarationBase, checker: ts.TypeChecker): ts.Type | null {
-  const sig = checker.getSignatureFromDeclaration(fn);
+  const sig = checker.getSignatureFromDeclaration(fn as ts.SignatureDeclaration);
   if (!sig) return null;
 
   const params = sig.getParameters();
@@ -67,7 +67,7 @@ function findComponentFunction(
             for (const d of decls) {
               if (ts.isFunctionDeclaration(d)) return d;
               if (ts.isVariableDeclaration(d) && d.initializer) {
-                const fn = unwrapToFunction(d.initializer, checker);
+                const fn = unwrapToFunction(d.initializer);
                 if (fn) return fn;
               }
             }
