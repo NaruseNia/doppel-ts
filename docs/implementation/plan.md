@@ -15,7 +15,7 @@ doppel-ts v1 の実装を5フェーズに分けて進行する。フェーズ1�
 | 3        | TASK-003: React コンポーネント検出           | TASK-002                                         | L    | ✅ Done    |
 | 3        | TASK-008: 特徴ベクトル生成（Rust）           | TASK-007                                         | L    | 🔲 Ready   |
 | 3        | TASK-004: Props 型抽出                       | TASK-002, TASK-003                               | L    | ✅ Done    |
-| 3        | TASK-005: JSX ツリー抽出・正規化             | TASK-002, TASK-003                               | L    | 🔲 Ready   |
+| 3        | TASK-005: JSX ツリー抽出・正規化             | TASK-002, TASK-003                               | L    | ✅ Done    |
 | 3        | TASK-009: 類似度計算エンジン（Rust）         | TASK-008                                         | L    | ⏳ Blocked |
 | 4        | TASK-006: 構造データ正規化                   | TASK-004, TASK-005                               | M    | ⏳ Blocked |
 | 4        | TASK-010: 多段階閾値判定・重み付け           | TASK-009                                         | S    | ⏳ Blocked |
