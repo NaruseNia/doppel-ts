@@ -7,7 +7,7 @@ import { formatTerminal } from "./output/terminal.js";
 import { formatRichJson, formatMinimalJson } from "./output/json.js";
 import type { AnalysisOutput, SimilarityPair, ComponentSummary } from "./output/types.js";
 
-const VERSION = "0.0.0";
+const VERSION = "0.1.0";
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
