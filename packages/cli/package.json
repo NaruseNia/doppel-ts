@@ -14,8 +14,10 @@
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
+    "@clack/prompts": "^1.5.1",
     "@doppel-ts/core": "workspace:*",
-    "@doppel-ts/native": "workspace:*"
+    "@doppel-ts/native": "workspace:*",
+    "tinyglobby": "^0.2.17"
   },
   "devDependencies": {
     "@types/node": "^25.9.3",
