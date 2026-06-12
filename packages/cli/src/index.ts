@@ -61,7 +61,14 @@ async function main() {
   s?.stop(`Found ${result.totalComponents} components`);
 
   s?.start("Computing similarity...");
-  let pairs: SimilarityPair[] = computeSimilarityStub(result.components);
+  const batchInput = {
+    components: result.components,
+    config: {
+      weights: config.weights,
+      thresholds: Object.entries(config.threshold).map(([name, minScore]) => ({ name, minScore })),
+    },
+  };
+  let pairs: SimilarityPair[] = computeSimilarity(result.components, batchInput);
   pairs = filterSuppressed(pairs, config.suppress) as SimilarityPair[];
   s?.stop(`Found ${pairs.length} similar pairs`);
 
@@ -82,8 +89,43 @@ async function main() {
   }
 }
 
-function computeSimilarityStub(components: NormalizedComponentData[]): SimilarityPair[] {
-  // Placeholder until @doppel-ts/native is built and linked
+let nativeModule: { computeSimilarity: (json: string) => string } | null = null;
+try {
+  nativeModule = require("@doppel-ts/native");
+} catch {
+  // Native addon not available — fallback to JS stub
+}
+
+function computeSimilarity(
+  components: NormalizedComponentData[],
+  batchInput: unknown,
+): SimilarityPair[] {
+  if (nativeModule) {
+    const resultJson = nativeModule.computeSimilarity(JSON.stringify(batchInput));
+    const result = JSON.parse(resultJson) as {
+      results: Array<{
+        pair: [string, string];
+        overallScore: number;
+        breakdown: { props: number; jsx: number; style?: number; behavior?: number };
+        level: string;
+      }>;
+    };
+    return result.results.map((r) => {
+      const compA = components.find((c) => c.id === r.pair[0]);
+      const compB = components.find((c) => c.id === r.pair[1]);
+      return {
+        score: r.overallScore,
+        level: r.level,
+        breakdown: r.breakdown,
+        componentA: toSummary(compA ?? components[0]),
+        componentB: toSummary(compB ?? components[1]),
+      };
+    });
+  }
+  return computeFallback(components);
+}
+
+function computeFallback(components: NormalizedComponentData[]): SimilarityPair[] {
   const pairs: SimilarityPair[] = [];
   for (let i = 0; i < components.length; i++) {
     for (let j = i + 1; j < components.length; j++) {

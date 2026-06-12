@@ -7,7 +7,6 @@
     "index.d.ts",
     "*.node"
   ],
-  "type": "module",
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
