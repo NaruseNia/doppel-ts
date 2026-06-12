@@ -1,0 +1,40 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+env:
+  MISE_EXPERIMENTAL: 1
+
+jobs:
+  publish:
+    runs-on: docker
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: https://github.com/jdx/mise-action@v2
+
+      - run: mise run install
+
+      - run: mise run build
+
+      - name: Set version from tag
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          pnpm --filter @doppel-ts/core exec npm version "$VERSION" --no-git-tag-version
+          pnpm --filter doppel-ts exec npm version "$VERSION" --no-git-tag-version
+
+      - name: Publish @doppel-ts/core
+        run: pnpm --filter @doppel-ts/core publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: false
+
+      - name: Publish doppel-ts
+        run: pnpm --filter doppel-ts publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: false
