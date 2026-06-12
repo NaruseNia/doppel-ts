@@ -1,4 +1,6 @@
-export { analyze } from "./analyze.js";
+export { analyze, filterSuppressed } from "./analyze.js";
+export type { AnalyzeOptions, AnalyzeResult } from "./analyze.js";
+
 export {
   defineConfig,
   loadConfig,
@@ -11,6 +13,16 @@ export type { DoppelConfig, ResolvedConfig } from "./config/index.js";
 
 export type { ParserInterface, ParserFactory } from "./parser/interface.js";
 export { TS6CompilerParser, ts6CompilerFactory } from "./parser/ts-compiler/index.js";
+
+export { normalizeAll, normalizeComponent } from "./normalizer/index.js";
+export type {
+  NormalizedComponentData,
+  NormalizedProps,
+  NormalizedStyleInfo,
+  NormalizedBehaviorInfo,
+} from "./normalizer/types.js";
+
+export { isPairSuppressed } from "./suppress/index.js";
 
 export type {
   ComponentInfo,

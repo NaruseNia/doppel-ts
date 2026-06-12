@@ -1,3 +1,4 @@
+import path from "node:path";
 import { log } from "@clack/prompts";
 import type { AnalysisOutput, SimilarityPair } from "./types.js";
 
@@ -34,8 +35,9 @@ export function formatTerminal(output: AnalysisOutput, detail: boolean): void {
       const scorePct = `${Math.round(pair.score * 100)}%`;
       const nameA = pair.componentA.name;
       const nameB = pair.componentB.name;
-      const pathA = pair.componentA.filePath;
-      const pathB = pair.componentB.filePath;
+      const cwd = process.cwd();
+      const pathA = relativePath(pair.componentA.filePath, cwd);
+      const pathB = relativePath(pair.componentB.filePath, cwd);
 
       log.message(
         `  ${c(BOLD, nameA)} ${DIM}↔${RESET} ${c(BOLD, nameB)}  ${c(color, scorePct)}  ${c(DIM, `${pathA} ↔ ${pathB}`)}`,
@@ -71,6 +73,12 @@ export function formatTerminal(output: AnalysisOutput, detail: boolean): void {
 
 function pct(v: number): string {
   return `${Math.round(v * 100)}%`;
+}
+
+function relativePath(filePath: string, cwd: string): string {
+  const rel = path.relative(cwd, filePath);
+  if (rel.length < filePath.length) return rel;
+  return filePath;
 }
 
 function groupByLevel(pairs: SimilarityPair[]): Map<string, SimilarityPair[]> {
