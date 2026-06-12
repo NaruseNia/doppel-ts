@@ -3,6 +3,7 @@ import type { ParserFactory, ParserInterface } from "../interface.js";
 import type { ComponentInfo } from "../../types/component.js";
 import type { PropsInfo } from "../../types/props.js";
 import type { NormalizedJSXTree } from "../../types/jsx.js";
+import { detectComponents } from "../../detector/index.js";
 
 export class TS6CompilerParser implements ParserInterface {
   private program: ts.Program;
@@ -25,9 +26,8 @@ export class TS6CompilerParser implements ParserInterface {
     this.checker = this.program.getTypeChecker();
   }
 
-  extractComponents(_filePaths: string[]): ComponentInfo[] {
-    // TASK-003 で実装
-    return [];
+  extractComponents(filePaths: string[]): ComponentInfo[] {
+    return detectComponents(filePaths, this.program, this.checker);
   }
 
   extractProps(_component: ComponentInfo): PropsInfo {
