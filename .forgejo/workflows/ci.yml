@@ -8,16 +8,12 @@ on:
 
 jobs:
   lint:
-    runs-on: codeberg-small
+    runs-on: docker
+    container: node:22
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: pnpm
+      - run: corepack enable && corepack prepare pnpm@latest --activate
 
       - run: pnpm install --frozen-lockfile
 
@@ -31,19 +27,15 @@ jobs:
         run: pnpm -r exec tsc --noEmit
 
   build-ts:
-    runs-on: codeberg-small
+    runs-on: docker
     strategy:
       matrix:
         node-version: ["20", "22"]
+    container: node:${{ matrix.node-version }}
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: pnpm
+      - run: corepack enable && corepack prepare pnpm@latest --activate
 
       - run: pnpm install --frozen-lockfile
 
@@ -54,11 +46,10 @@ jobs:
         run: pnpm -r test
 
   build-native:
-    runs-on: codeberg-small
+    runs-on: docker
+    container: rust:latest
     steps:
       - uses: actions/checkout@v4
-
-      - uses: dtolnay/rust-toolchain@stable
 
       - name: Cargo check
         working-directory: packages/native
