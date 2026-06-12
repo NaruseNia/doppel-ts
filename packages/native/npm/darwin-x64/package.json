@@ -1,0 +1,15 @@
+{
+  "name": "@doppel-ts/native-darwin-x64",
+  "version": "0.1.2",
+  "license": "MIT OR Apache-2.0",
+  "files": [
+    "doppel-native.darwin-x64.node"
+  ],
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "main": "doppel-native.darwin-x64.node"
+}

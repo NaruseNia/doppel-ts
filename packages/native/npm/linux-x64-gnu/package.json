@@ -1,0 +1,18 @@
+{
+  "name": "@doppel-ts/native-linux-x64-gnu",
+  "version": "0.1.2",
+  "license": "MIT OR Apache-2.0",
+  "files": [
+    "doppel-native.linux-x64-gnu.node"
+  ],
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "libc": [
+    "glibc"
+  ],
+  "main": "doppel-native.linux-x64-gnu.node"
+}

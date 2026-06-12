@@ -1,0 +1,119 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-native:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-apple-darwin
+            os: macos-latest
+          - target: aarch64-apple-darwin
+            os: macos-latest
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - run: corepack enable && corepack prepare pnpm@latest --activate
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build native
+        working-directory: packages/native
+        run: npx napi build --release --platform --target ${{ matrix.target }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-${{ matrix.target }}
+          path: packages/native/*.node
+          if-no-files-found: error
+
+  publish:
+    needs: build-native
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+
+      - run: corepack enable && corepack prepare pnpm@latest --activate
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Move binaries to platform packages
+        run: |
+          cp artifacts/native-aarch64-apple-darwin/doppel-native.darwin-arm64.node packages/native/npm/darwin-arm64/
+          cp artifacts/native-x86_64-apple-darwin/doppel-native.darwin-x64.node packages/native/npm/darwin-x64/
+          cp artifacts/native-x86_64-unknown-linux-gnu/doppel-native.linux-x64-gnu.node packages/native/npm/linux-x64-gnu/
+          cp artifacts/native-x86_64-pc-windows-msvc/doppel-native.win32-x64-msvc.node packages/native/npm/win32-x64-msvc/
+
+      - name: Set version from tag
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          pnpm --filter @doppel-ts/core exec npm version "$VERSION" --no-git-tag-version --allow-same-version
+          pnpm --filter @doppel-ts/native exec npm version "$VERSION" --no-git-tag-version --allow-same-version
+          pnpm --filter doppel-ts exec npm version "$VERSION" --no-git-tag-version --allow-same-version
+          for dir in packages/native/npm/*/; do
+            (cd "$dir" && npm version "$VERSION" --no-git-tag-version --allow-same-version)
+          done
+
+      - name: Copy README
+        run: |
+          cp README.md packages/core/README.md
+          cp README.md packages/cli/README.md
+
+      - name: Build TS packages
+        run: pnpm --filter @doppel-ts/core --filter doppel-ts build
+
+      - name: Publish platform packages
+        run: |
+          for dir in packages/native/npm/*/; do
+            (cd "$dir" && npm publish --access public) || true
+          done
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish @doppel-ts/native
+        run: pnpm --filter @doppel-ts/native publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish @doppel-ts/core
+        run: pnpm --filter @doppel-ts/core publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish doppel-ts
+        run: pnpm --filter doppel-ts publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

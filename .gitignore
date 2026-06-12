@@ -6,5 +6,6 @@ fixtures/large/
 dist/
 target/
 *.node
+packages/native/npm/*/doppel-native.*.node
 .turbo/
 *.tsbuildinfo

@@ -1,6 +1,6 @@
 {
   "name": "@doppel-ts/native",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT OR Apache-2.0",
   "files": [
     "index.js",
@@ -16,6 +16,12 @@
   },
   "devDependencies": {
     "@napi-rs/cli": "^3"
+  },
+  "optionalDependencies": {
+    "@doppel-ts/native-darwin-arm64": "0.1.2",
+    "@doppel-ts/native-darwin-x64": "0.1.2",
+    "@doppel-ts/native-linux-x64-gnu": "0.1.2",
+    "@doppel-ts/native-win32-x64-msvc": "0.1.2"
   },
   "napi": {
     "binaryName": "doppel-native",

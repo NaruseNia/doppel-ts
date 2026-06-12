@@ -1,0 +1,15 @@
+{
+  "name": "@doppel-ts/native-darwin-arm64",
+  "version": "0.1.2",
+  "license": "MIT OR Apache-2.0",
+  "files": [
+    "doppel-native.darwin-arm64.node"
+  ],
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "main": "doppel-native.darwin-arm64.node"
+}

@@ -1,45 +1,16 @@
 name: Release
 
+# Release is handled by GitHub Actions (.github/workflows/release.yml)
+# which has access to macOS/Windows/Linux runners for cross-platform native builds.
+# This file is kept as a no-op to avoid Forgejo errors on tag push.
+
 on:
   push:
     tags:
       - "v*.*.*"
 
-env:
-  MISE_EXPERIMENTAL: 1
-
 jobs:
-  publish:
+  noop:
     runs-on: docker
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: https://github.com/jdx/mise-action@v2
-
-      - run: mise run install
-
-      - run: mise run build
-
-      - name: Copy README to packages
-        run: |
-          cp README.md packages/core/README.md
-          cp README.md packages/cli/README.md
-
-      - name: Set version from tag
-        run: |
-          VERSION="${GITHUB_REF_NAME#v}"
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          pnpm --filter @doppel-ts/core exec npm version "$VERSION" --no-git-tag-version --allow-same-version
-          pnpm --filter doppel-ts exec npm version "$VERSION" --no-git-tag-version --allow-same-version
-
-      - name: Publish @doppel-ts/core
-        run: pnpm --filter @doppel-ts/core publish --access public --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: false
-
-      - name: Publish doppel-ts
-        run: pnpm --filter doppel-ts publish --access public --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_CONFIG_PROVENANCE: false
+      - run: echo "Release is handled by GitHub Actions"

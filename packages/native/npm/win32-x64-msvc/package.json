@@ -1,0 +1,15 @@
+{
+  "name": "@doppel-ts/native-win32-x64-msvc",
+  "version": "0.1.2",
+  "license": "MIT OR Apache-2.0",
+  "files": [
+    "doppel-native.win32-x64-msvc.node"
+  ],
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "main": "doppel-native.win32-x64-msvc.node"
+}
