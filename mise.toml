@@ -1,0 +1,62 @@
+[tools]
+node = "22"
+"npm:pnpm" = "10"
+rust = "stable"
+
+[tasks.install]
+description = "Install dependencies"
+run = "pnpm install --frozen-lockfile"
+
+[tasks.build]
+description = "Build core & cli"
+run = "pnpm --filter @doppel-ts/core --filter doppel-ts build"
+
+[tasks."build:native"]
+description = "Build Rust native addon"
+dir = "packages/native"
+run = "cargo build --release"
+
+[tasks."build:all"]
+description = "Build everything"
+depends = ["build", "build:native"]
+
+[tasks.test]
+description = "Run TypeScript tests"
+run = "pnpm --filter @doppel-ts/core --filter doppel-ts test"
+
+[tasks."test:native"]
+description = "Run Rust tests"
+dir = "packages/native"
+run = "cargo test"
+
+[tasks."test:all"]
+description = "Run all tests"
+depends = ["test", "test:native"]
+
+[tasks.lint]
+description = "Run oxlint"
+run = "pnpm -w run lint"
+
+[tasks.fmt]
+description = "Format with oxfmt"
+run = "pnpm -w run fmt"
+
+[tasks."fmt:check"]
+description = "Check formatting"
+run = "pnpm -w run fmt:check"
+
+[tasks.typecheck]
+description = "TypeScript type check"
+run = [
+  "pnpm --filter @doppel-ts/core build",
+  "pnpm --filter @doppel-ts/core --filter doppel-ts exec tsc --noEmit",
+]
+
+[tasks."cargo:check"]
+description = "Rust type check"
+dir = "packages/native"
+run = "cargo check"
+
+[tasks.ci]
+description = "Run all CI checks"
+depends = ["lint", "fmt:check", "typecheck", "test", "cargo:check", "test:native"]
