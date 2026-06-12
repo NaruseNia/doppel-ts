@@ -1,4 +1,11 @@
+import path from "node:path";
 import type { AnalysisOutput } from "./types.js";
+
+const cwd = process.cwd();
+function rel(filePath: string): string {
+  const r = path.relative(cwd, filePath);
+  return r.length < filePath.length ? r : filePath;
+}
 
 export function formatRichJson(output: AnalysisOutput): string {
   return JSON.stringify(
@@ -17,7 +24,7 @@ export function formatRichJson(output: AnalysisOutput): string {
         breakdown: pair.breakdown,
         componentA: {
           name: pair.componentA.name,
-          filePath: pair.componentA.filePath,
+          filePath: rel(pair.componentA.filePath),
           line: pair.componentA.line,
           props: pair.componentA.props.map((p) => ({
             name: p.name,
@@ -28,7 +35,7 @@ export function formatRichJson(output: AnalysisOutput): string {
         },
         componentB: {
           name: pair.componentB.name,
-          filePath: pair.componentB.filePath,
+          filePath: rel(pair.componentB.filePath),
           line: pair.componentB.line,
           props: pair.componentB.props.map((p) => ({
             name: p.name,
@@ -56,8 +63,8 @@ export function formatMinimalJson(output: AnalysisOutput): string {
       pairs: output.pairs.map((pair) => ({
         score: pair.score,
         level: pair.level,
-        a: { name: pair.componentA.name, path: pair.componentA.filePath },
-        b: { name: pair.componentB.name, path: pair.componentB.filePath },
+        a: { name: pair.componentA.name, path: rel(pair.componentA.filePath) },
+        b: { name: pair.componentB.name, path: rel(pair.componentB.filePath) },
       })),
     },
     null,
