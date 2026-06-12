@@ -20,6 +20,11 @@ jobs:
 
       - run: mise run build
 
+      - name: Copy README to packages
+        run: |
+          cp README.md packages/core/README.md
+          cp README.md packages/cli/README.md
+
       - name: Set version from tag
         run: |
           VERSION="${GITHUB_REF_NAME#v}"

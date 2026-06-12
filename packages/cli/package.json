@@ -6,7 +6,8 @@
     "doppel-ts": "./dist/index.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "type": "module",
   "scripts": {
