@@ -57,6 +57,11 @@ description = "Rust type check"
 dir = "packages/native"
 run = "cargo check"
 
+[tasks.cli]
+description = "Run doppel-ts CLI"
+depends = ["build"]
+run = "node packages/cli/dist/index.js"
+
 [tasks.ci]
 description = "Run all CI checks"
 depends = ["lint", "fmt:check", "typecheck", "test", "cargo:check", "test:native"]
